@@ -1,0 +1,51 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model UserRole {
+  id       Int    @id @default(autoincrement())
+  userRole String @unique
+
+  users User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id         Int     @id @default(autoincrement())
+  fullName   String
+  email      String  @unique
+  phone      String? @unique
+  role       String
+  experience String
+
+  userRole   UserRole   @relation(fields: [userRoleId], references: [id])
+  userRoleId Int
+  interviews Interview[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Interview {
+  id         Int   @id @default(autoincrement())
+  userId     Int
+  confidence Float
+  label      String
+  role       String
+  experience String
+  questions  Json
+  answers    Json
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

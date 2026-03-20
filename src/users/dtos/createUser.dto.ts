@@ -1,5 +1,6 @@
 import {
   IsEmail,
+  IsNumber,
   IsOptional,
   IsPhoneNumber,
   IsString,
@@ -22,6 +23,6 @@ export class CreateUserDto {
   @MinLength(1)
   role: string;
 
-  @IsString()
-  experience: string;
+  @IsNumber()
+  experience: number;
 }

@@ -19,14 +19,16 @@ model UserRole {
 }
 
 model User {
-  id         Int     @id @default(autoincrement())
-  fullName   String
-  email      String  @unique
-  phone      String? @unique
-  role       String
-  experience String
+  id       Int     @id @default(autoincrement())
+  fullName String
+  email    String  @unique
+  phone    String? @unique
+  role     String
 
-  userRole   UserRole   @relation(fields: [userRoleId], references: [id])
+  //experience is measured in months
+  experience Int? @default(0)
+
+  userRole   UserRole    @relation(fields: [userRoleId], references: [id])
   userRoleId Int
   interviews Interview[]
 
@@ -35,12 +37,12 @@ model User {
 }
 
 model Interview {
-  id         Int   @id @default(autoincrement())
+  id         Int    @id @default(autoincrement())
   userId     Int
   confidence Float
   label      String
   role       String
-  experience String
+  experience Int?   @default(0)
   questions  Json
   answers    Json
 

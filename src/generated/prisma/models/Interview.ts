@@ -30,12 +30,14 @@ export type InterviewAvgAggregateOutputType = {
   id: number | null
   userId: number | null
   confidence: number | null
+  experience: number | null
 }
 
 export type InterviewSumAggregateOutputType = {
   id: number | null
   userId: number | null
   confidence: number | null
+  experience: number | null
 }
 
 export type InterviewMinAggregateOutputType = {
@@ -44,7 +46,7 @@ export type InterviewMinAggregateOutputType = {
   confidence: number | null
   label: string | null
   role: string | null
-  experience: string | null
+  experience: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -55,7 +57,7 @@ export type InterviewMaxAggregateOutputType = {
   confidence: number | null
   label: string | null
   role: string | null
-  experience: string | null
+  experience: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -79,12 +81,14 @@ export type InterviewAvgAggregateInputType = {
   id?: true
   userId?: true
   confidence?: true
+  experience?: true
 }
 
 export type InterviewSumAggregateInputType = {
   id?: true
   userId?: true
   confidence?: true
+  experience?: true
 }
 
 export type InterviewMinAggregateInputType = {
@@ -215,7 +219,7 @@ export type InterviewGroupByOutputType = {
   confidence: number
   label: string
   role: string
-  experience: string
+  experience: number | null
   questions: runtime.JsonValue
   answers: runtime.JsonValue
   createdAt: Date
@@ -251,7 +255,7 @@ export type InterviewWhereInput = {
   confidence?: Prisma.FloatFilter<"Interview"> | number
   label?: Prisma.StringFilter<"Interview"> | string
   role?: Prisma.StringFilter<"Interview"> | string
-  experience?: Prisma.StringFilter<"Interview"> | string
+  experience?: Prisma.IntNullableFilter<"Interview"> | number | null
   questions?: Prisma.JsonFilter<"Interview">
   answers?: Prisma.JsonFilter<"Interview">
   createdAt?: Prisma.DateTimeFilter<"Interview"> | Date | string
@@ -265,7 +269,7 @@ export type InterviewOrderByWithRelationInput = {
   confidence?: Prisma.SortOrder
   label?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  experience?: Prisma.SortOrder
+  experience?: Prisma.SortOrderInput | Prisma.SortOrder
   questions?: Prisma.SortOrder
   answers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -282,7 +286,7 @@ export type InterviewWhereUniqueInput = Prisma.AtLeast<{
   confidence?: Prisma.FloatFilter<"Interview"> | number
   label?: Prisma.StringFilter<"Interview"> | string
   role?: Prisma.StringFilter<"Interview"> | string
-  experience?: Prisma.StringFilter<"Interview"> | string
+  experience?: Prisma.IntNullableFilter<"Interview"> | number | null
   questions?: Prisma.JsonFilter<"Interview">
   answers?: Prisma.JsonFilter<"Interview">
   createdAt?: Prisma.DateTimeFilter<"Interview"> | Date | string
@@ -296,7 +300,7 @@ export type InterviewOrderByWithAggregationInput = {
   confidence?: Prisma.SortOrder
   label?: Prisma.SortOrder
   role?: Prisma.SortOrder
-  experience?: Prisma.SortOrder
+  experience?: Prisma.SortOrderInput | Prisma.SortOrder
   questions?: Prisma.SortOrder
   answers?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -317,7 +321,7 @@ export type InterviewScalarWhereWithAggregatesInput = {
   confidence?: Prisma.FloatWithAggregatesFilter<"Interview"> | number
   label?: Prisma.StringWithAggregatesFilter<"Interview"> | string
   role?: Prisma.StringWithAggregatesFilter<"Interview"> | string
-  experience?: Prisma.StringWithAggregatesFilter<"Interview"> | string
+  experience?: Prisma.IntNullableWithAggregatesFilter<"Interview"> | number | null
   questions?: Prisma.JsonWithAggregatesFilter<"Interview">
   answers?: Prisma.JsonWithAggregatesFilter<"Interview">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Interview"> | Date | string
@@ -328,7 +332,7 @@ export type InterviewCreateInput = {
   confidence: number
   label: string
   role: string
-  experience: string
+  experience?: number | null
   questions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -342,7 +346,7 @@ export type InterviewUncheckedCreateInput = {
   confidence: number
   label: string
   role: string
-  experience: string
+  experience?: number | null
   questions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -353,7 +357,7 @@ export type InterviewUpdateInput = {
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   questions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -367,7 +371,7 @@ export type InterviewUncheckedUpdateInput = {
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   questions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -380,7 +384,7 @@ export type InterviewCreateManyInput = {
   confidence: number
   label: string
   role: string
-  experience: string
+  experience?: number | null
   questions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -391,7 +395,7 @@ export type InterviewUpdateManyMutationInput = {
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   questions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -404,7 +408,7 @@ export type InterviewUncheckedUpdateManyInput = {
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   questions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -438,6 +442,7 @@ export type InterviewAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
 }
 
 export type InterviewMaxOrderByAggregateInput = {
@@ -466,6 +471,7 @@ export type InterviewSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   confidence?: Prisma.SortOrder
+  experience?: Prisma.SortOrder
 }
 
 export type InterviewCreateNestedManyWithoutUserInput = {
@@ -522,7 +528,7 @@ export type InterviewCreateWithoutUserInput = {
   confidence: number
   label: string
   role: string
-  experience: string
+  experience?: number | null
   questions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -534,7 +540,7 @@ export type InterviewUncheckedCreateWithoutUserInput = {
   confidence: number
   label: string
   role: string
-  experience: string
+  experience?: number | null
   questions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -576,7 +582,7 @@ export type InterviewScalarWhereInput = {
   confidence?: Prisma.FloatFilter<"Interview"> | number
   label?: Prisma.StringFilter<"Interview"> | string
   role?: Prisma.StringFilter<"Interview"> | string
-  experience?: Prisma.StringFilter<"Interview"> | string
+  experience?: Prisma.IntNullableFilter<"Interview"> | number | null
   questions?: Prisma.JsonFilter<"Interview">
   answers?: Prisma.JsonFilter<"Interview">
   createdAt?: Prisma.DateTimeFilter<"Interview"> | Date | string
@@ -588,7 +594,7 @@ export type InterviewCreateManyUserInput = {
   confidence: number
   label: string
   role: string
-  experience: string
+  experience?: number | null
   questions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
@@ -599,7 +605,7 @@ export type InterviewUpdateWithoutUserInput = {
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   questions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -611,7 +617,7 @@ export type InterviewUncheckedUpdateWithoutUserInput = {
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   questions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -623,7 +629,7 @@ export type InterviewUncheckedUpdateManyWithoutUserInput = {
   confidence?: Prisma.FloatFieldUpdateOperationsInput | number
   label?: Prisma.StringFieldUpdateOperationsInput | string
   role?: Prisma.StringFieldUpdateOperationsInput | string
-  experience?: Prisma.StringFieldUpdateOperationsInput | string
+  experience?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   questions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   answers?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -709,7 +715,7 @@ export type $InterviewPayload<ExtArgs extends runtime.Types.Extensions.InternalA
     confidence: number
     label: string
     role: string
-    experience: string
+    experience: number | null
     questions: runtime.JsonValue
     answers: runtime.JsonValue
     createdAt: Date
@@ -1143,7 +1149,7 @@ export interface InterviewFieldRefs {
   readonly confidence: Prisma.FieldRef<"Interview", 'Float'>
   readonly label: Prisma.FieldRef<"Interview", 'String'>
   readonly role: Prisma.FieldRef<"Interview", 'String'>
-  readonly experience: Prisma.FieldRef<"Interview", 'String'>
+  readonly experience: Prisma.FieldRef<"Interview", 'Int'>
   readonly questions: Prisma.FieldRef<"Interview", 'Json'>
   readonly answers: Prisma.FieldRef<"Interview", 'Json'>
   readonly createdAt: Prisma.FieldRef<"Interview", 'DateTime'>

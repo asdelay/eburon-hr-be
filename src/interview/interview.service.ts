@@ -99,6 +99,7 @@ Return ONLY valid JSON in this exact format, no other text:
     const answersText = dto.answers
       .map((a, i) => `${i + 1}. Q: ${a.question}\n   A: ${a.answer}`)
       .join('\n\n');
+    const exp = `${Math.floor(dto.experience / 12)} years ${dto.experience % 12 ? `and ${dto.experience % 12} months` : ''}`;
     const scoresText = dto.perAnswerScores
       ? dto.perAnswerScores
           .map((s, i) => `Q${i + 1}: ${s.confidenceDelta}`)
@@ -107,7 +108,7 @@ Return ONLY valid JSON in this exact format, no other text:
 
     const prompt = `You are computing a final interview confidence score.
 
-Candidate: ${dto.role} with ${dto.experience} experience.
+Candidate: ${dto.role} with ${exp} of experience.
 
 Answers:
 ${answersText}
@@ -139,7 +140,6 @@ Return ONLY valid JSON in this exact format, no other text:
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     await this.prisma.interview.create({
       data: {
         userId: dto.candidateId,

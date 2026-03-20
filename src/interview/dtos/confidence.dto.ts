@@ -31,9 +31,8 @@ export class ConfidenceDto {
   @MinLength(1)
   role: string;
 
-  @IsString()
-  @MinLength(1)
-  experience: string;
+  @IsNumber()
+  experience: number;
 
   @IsArray()
   @ValidateNested({ each: true })

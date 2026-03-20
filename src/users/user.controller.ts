@@ -14,9 +14,23 @@ export class UserController {
   @Get('candidates/for-employer')
   async getCandidatesForEmployer(
     @Query('role') role?: string,
-    @Query('sort') sort?: string,
+    @Query('sort') sort?: 'confidence_asc' | 'confidence_desc',
+    @Query('filter')
+    filter?:
+      | 'all'
+      | 'lt3months'
+      | '3to12months'
+      | '1to2years'
+      | '2to5years'
+      | 'gt5years',
   ) {
-    return await this.userService.getCandidatesForEmployer(role, sort);
+    const result = await this.userService.getCandidatesForEmployer(
+      role,
+      sort,
+      filter,
+    );
+    console.log(result);
+    return result;
   }
 
   @Get('candidates/:id')

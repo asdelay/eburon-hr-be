@@ -28,7 +28,7 @@ async function main() {
       fullName: 'John Doe',
       email: 'johndoe@gmail.com',
       role: 'Frontend Developer',
-      experience: '1 year',
+      experience: 12,
       userRoleId: candidateRole.id,
     },
   });

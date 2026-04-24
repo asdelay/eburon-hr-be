@@ -10,10 +10,10 @@ import {
 export class CreateUserDto {
   @IsString()
   @MinLength(2)
-  fullName: string;
+  fullName!: string;
 
   @IsEmail()
-  email: string;
+  email!: string;
 
   @IsOptional()
   @IsPhoneNumber()
@@ -21,8 +21,8 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(1)
-  role: string;
+  role!: string;
 
   @IsNumber()
-  experience: number;
+  experience!: number;
 }

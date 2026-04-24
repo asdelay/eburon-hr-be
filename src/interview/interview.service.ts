@@ -9,7 +9,7 @@ import { ConfidenceDto } from './dtos/confidence.dto';
 @Injectable()
 export class InterviewService {
   private ai: GoogleGenAI;
-  private model = 'gemini-2.5-flash';
+  private model = 'gemini-3.1-flash-lite-preview';
 
   constructor(
     private config: ConfigService,
@@ -25,7 +25,7 @@ export class InterviewService {
   async generateQuestions(
     dto: GenerateQuestionsDto,
   ): Promise<{ questions: string[] }> {
-    const prompt = `You are an interviewer. The candidate is a "${dto.role}" with "${dto.experience}" experience.
+    const prompt = `You are an interviewer. The candidate is a "${dto.role}" with "${dto.experience} months" experience.
 
 Generate exactly 5 interview questions to assess their technical knowledge and fit for the role. Questions should be appropriate for their stated level.
 
@@ -140,13 +140,18 @@ Return ONLY valid JSON in this exact format, no other text:
       );
     }
 
-    await this.prisma.interview.create({
-      data: {
+    await this.prisma.interview.upsert({
+      where: { userId: dto.candidateId },
+      update: {
+        confidence: parsed.confidence,
+        label: parsed.label,
+        questions: dto.answers.map((a) => a.question),
+        answers: dto.answers.map((a) => a.answer),
+      },
+      create: {
         userId: dto.candidateId,
         confidence: parsed.confidence,
         label: parsed.label,
-        role: dto.role,
-        experience: dto.experience,
         questions: dto.answers.map((a) => a.question),
         answers: dto.answers.map((a) => a.answer),
       },

@@ -11,33 +11,33 @@ import { Type } from 'class-transformer';
 
 export class QaPair {
   @IsString()
-  question: string;
+  question!: string;
 
   @IsString()
-  answer: string;
+  answer!: string;
 }
 
 class PerAnswerScore {
   @IsNumber()
-  confidenceDelta: number;
+  confidenceDelta!: number;
 }
 
 export class ConfidenceDto {
   @IsInt()
   @Type(() => Number)
-  candidateId: number;
+  candidateId!: number;
 
   @IsString()
   @MinLength(1)
-  role: string;
+  role!: string;
 
   @IsNumber()
-  experience: number;
+  experience!: number;
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => QaPair)
-  answers: QaPair[];
+  answers!: QaPair[];
 
   @IsArray()
   @ValidateNested({ each: true })

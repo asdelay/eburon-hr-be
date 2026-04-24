@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { Prisma } from 'src/generated/prisma/client';
+import { EditCandidateDto } from './dtos/editCandidate.dto';
 
 @Injectable()
 export class UserService {
@@ -56,16 +57,11 @@ export class UserService {
     const candidates = await this.prisma.user.findMany({
       where,
       include: {
-        interviews: {
-          orderBy: { createdAt: 'desc' },
-          take: 1,
-        },
+        interview: true,
       },
     });
 
     const result = candidates.map((c) => {
-      const latest = c.interviews[0];
-
       return {
         id: c.id,
         fullName: c.fullName,
@@ -74,13 +70,7 @@ export class UserService {
         role: c.role,
         experience: c.experience,
         createdAt: c.createdAt,
-        latestInterview: latest
-          ? {
-              confidence: latest.confidence,
-              label: latest.label,
-              createdAt: latest.createdAt,
-            }
-          : null,
+        latestInterview: c.interview,
       };
     });
 
@@ -97,7 +87,12 @@ export class UserService {
   }
 
   async getCandidateById(id: number) {
-    const candidate = await this.prisma.user.findFirst({ where: { id } });
+    const candidate = await this.prisma.user.findFirst({
+      where: { id },
+      include: {
+        interview: true,
+      },
+    });
 
     if (!candidate) throw new BadRequestException('No user found');
 
@@ -136,6 +131,43 @@ export class UserService {
       }
       console.error(error);
       throw error;
+    }
+  }
+
+  async updateCandidate(id: number, editCandidateDto: EditCandidateDto) {
+    const existingUser = await this.prisma.user.findUnique({
+      where: { id },
+      include: { userRole: true },
+    });
+
+    if (!existingUser || existingUser.userRole.userRole !== 'candidate')
+      throw new BadRequestException('Bad request');
+
+    try {
+      const updatedUser = await this.prisma.user.update({
+        where: { id },
+        data: {
+          ...editCandidateDto,
+        },
+      });
+      return updatedUser;
+    } catch (error) {
+      console.log(error);
+      return { status: 'Error', message: 'DB Error' };
+    }
+  }
+
+  async deleteCandidate(id: number) {
+    const candidate = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!candidate) throw new BadRequestException('No such user found');
+
+    try {
+      await this.prisma.user.delete({ where: { id } });
+      return { status: 'success' };
+    } catch (error) {
+      console.log(error);
+      return { status: 'error', message: 'DB Error' };
     }
   }
 }

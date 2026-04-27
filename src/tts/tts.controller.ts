@@ -7,7 +7,6 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 @Controller('tts')
 export class TtsController {
   constructor(private readonly ttsService: TtsService) {}
-  @UseGuards(JwtAuthGuard)
   @Post('synthesize')
   async synthesize(@Body() dto: SynthesizeDto, @Res() res: Response) {
     const { audio, contentType } = await this.ttsService.synthesize(dto);

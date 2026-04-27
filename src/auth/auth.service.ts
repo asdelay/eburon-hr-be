@@ -14,6 +14,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from 'jwt-decode';
 import { Cron } from '@nestjs/schedule';
+import { createHash, timingSafeEqual } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,11 @@ export class AuthService {
     private readonly emailService: EmailService,
     private readonly jwtService: JwtService,
   ) {}
+
+  private getRefreshTokenDigest(token: string) {
+    const pepper = process.env.JWT_SECRET_REFRESH ?? 'refresh-pepper';
+    return createHash('sha256').update(`${token}.${pepper}`).digest('hex');
+  }
 
   async login(email: string) {
     const user = await this.prismaService.user.findUnique({ where: { email } });
@@ -100,16 +106,16 @@ export class AuthService {
   }
 
   async saveRefreshToken(token: string, userId: number) {
-    const hashedRefreshToken = await bcrypt.hash(
-      token,
-      Number(process.env.SALT_ROUNDS),
-    );
-
-    if (!hashedRefreshToken) throw new BadRequestException('Fail during auth');
+    const hashedRefreshToken = this.getRefreshTokenDigest(token);
 
     const expiresAt = new Date(
       new Date().getTime() + THIRTY_DAYS_IN_MILLISECONDS,
     );
+
+    // Keep only one active refresh token per user to avoid O(n) bcrypt scans.
+    await this.prismaService.hashedToken.deleteMany({
+      where: { userId },
+    });
 
     const createdToken = await this.prismaService.hashedToken.create({
       data: {
@@ -133,24 +139,49 @@ export class AuthService {
 
     if (!payload.sub) throw new UnauthorizedException('No userId in jwt sub');
 
-    const dbTokens = await this.prismaService.hashedToken.findMany({
-      where: { user: { id: Number(payload.sub) } },
+    const dbToken = await this.prismaService.hashedToken.findFirst({
+      where: {
+        userId: Number(payload.sub),
+        isValid: true,
+        expiresAt: { gt: new Date() },
+      },
       include: { user: true },
+      orderBy: { createdAt: 'desc' },
     });
 
-    if (!dbTokens) throw new UnauthorizedException('Unauthorized');
+    if (!dbToken) throw new UnauthorizedException('Unauthorized');
 
-    for (const dbToken of dbTokens) {
-      const sameToken = await bcrypt.compare(refreshToken, dbToken.hash);
-      if (sameToken) {
-        return this.generateTokens({
-          sub: dbToken.user.id,
-          email: dbToken.user.email,
-        });
+    const refreshTokenDigest = this.getRefreshTokenDigest(refreshToken);
+    const digestMatches =
+      dbToken.hash.length === refreshTokenDigest.length &&
+      timingSafeEqual(
+        Buffer.from(dbToken.hash, 'utf8'),
+        Buffer.from(refreshTokenDigest, 'utf8'),
+      );
+
+    if (!digestMatches) {
+      const legacyBcryptMatch = await bcrypt.compare(
+        refreshToken,
+        dbToken.hash,
+      );
+      if (!legacyBcryptMatch) {
+        throw new UnauthorizedException('Unauthorized');
       }
     }
-    //triggers
-    throw new UnauthorizedException('Unauthorized');
+
+    // Do NOT rotate refresh tokens on refresh.
+    // In our Next.js RSC flow, server-to-server refresh cannot reliably set a
+    // new refresh_token cookie in the browser response. Rotating here would
+    // break refresh after the access token expires.
+    const access_token = await this.jwtService.signAsync({
+      sub: dbToken.user.id,
+      email: dbToken.user.email,
+    });
+
+    return {
+      access_token,
+      refresh_token: refreshToken,
+    };
   }
 
   //every 30 mins

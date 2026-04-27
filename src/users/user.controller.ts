@@ -46,7 +46,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('candidates/:id')
   async getCandidateById(@Param('id') id: string) {
+    const startedAt = performance.now();
     const user = await this.userService.getCandidateById(+id);
+    const elapsedMs = Math.round(performance.now() - startedAt);
+    console.log(`[perf] users.getCandidateById(${id}): ${elapsedMs}ms`);
     console.log(user);
     return user;
   }

@@ -77,6 +77,7 @@ export class AuthController {
     @Req() request: ExpressRequest,
     @Res({ passthrough: true }) res: Response,
   ) {
+    const refreshStartedAt = performance.now();
     if (!request || !request.cookies || !request.cookies.refresh_token) {
       console.log('no cookies :(');
       throw new UnauthorizedException('Unauthorized');
@@ -101,6 +102,8 @@ export class AuthController {
       maxAge: THIRTY_DAYS_IN_MILLISECONDS,
     });
 
+    const elapsedMs = Math.round(performance.now() - refreshStartedAt);
+    console.log(`[perf] auth.refresh.total: ${elapsedMs}ms`);
     return { status: 'success' };
   }
 }

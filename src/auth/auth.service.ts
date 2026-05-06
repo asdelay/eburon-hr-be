@@ -23,7 +23,7 @@ export class AuthService {
     private readonly magicLinksService: MagicLinksService,
     private readonly emailService: EmailService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   private getRefreshTokenDigest(token: string) {
     const pepper = process.env.JWT_SECRET_REFRESH ?? 'refresh-pepper';
@@ -35,10 +35,15 @@ export class AuthService {
 
     if (user) {
       const { linkData } = await this.magicLinksService.createLink(user);
-      await this.emailService.sendEmail(
+      await this.emailService.sendMagicLinkEmail(
         user.email,
-        'Test',
-        `Hello bro follow <a href="${process.env.NEXT_PUBLIC_FRONTEND_URL}/candidate/auth/callback/${linkData}">this link</a> to access the app.`,
+        'Your secure login link — Eburon HR',
+        {
+          heading: 'Welcome back.',
+          body: "We received a request to sign in to your Eburon HR account. Click the button below to securely access your account. This link is valid for 15 minutes.",
+          magicLink: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/candidate/auth/callback/${linkData}`,
+          ctaLabel: 'Sign In to Eburon HR',
+        },
       );
       return { message: 'Sent confirmation if this email exists' };
       //user does GET request to there, server extracts magic, verifies, if valid -> issues new access via passport, redirect to fe localhost:3000/candidates/me, if not valid redirect to fe localhost:3000/candidates/auth/login
@@ -71,10 +76,15 @@ export class AuthService {
     });
 
     const { linkData } = await this.magicLinksService.createLink(newUser);
-    await this.emailService.sendEmail(
+    await this.emailService.sendMagicLinkEmail(
       email,
-      'Authentication Link',
-      `Hello bro follow <a href="${process.env.NEXT_PUBLIC_FRONTEND_URL}/candidate/auth/callback/${linkData}">this link</a> to access the app.`,
+      'Activate your Eburon HR account',
+      {
+        heading: "You're almost in.",
+        body: "Your Eburon HR account has been created. Click the button below to verify your email and complete your registration. This link is valid for 15 minutes.",
+        magicLink: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/candidate/auth/callback/${linkData}`,
+        ctaLabel: 'Activate My Account',
+      },
     );
 
     return { status: 'success' };

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>{{subject}} — Eburon HR</title>
+  <style>
+    /* ─── Reset ─────────────────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body,
+    table,
+    td,
+    a {
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table,
+    td {
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+      border-collapse: collapse;
+    }
+
+    img {
+      border: 0;
+      outline: none;
+      text-decoration: none;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ─── Body ──────────────────────────────────────────────── */
+    body {
+      background-color: #0d0f14;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* ─── Wrapper ───────────────────────────────────────────── */
+    .wrapper {
+      background-color: #0d0f14;
+      padding: 48px 16px;
+      width: 100%;
+    }
+
+    /* ─── Card ──────────────────────────────────────────────── */
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, #161920 0%, #11141c 100%);
+      border: 1px solid rgba(139, 92, 246, 0.18);
+      border-radius: 20px;
+      box-shadow:
+        0 0 0 1px rgba(139, 92, 246, 0.08),
+        0 32px 64px rgba(0, 0, 0, 0.5),
+        0 0 80px rgba(139, 92, 246, 0.06) inset;
+      margin: 0 auto;
+      max-width: 560px;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    /* ─── Header glow bar ───────────────────────────────────── */
+    .header-glow {
+      background: linear-gradient(90deg, #7c3aed 0%, #a855f7 50%, #7c3aed 100%);
+      height: 3px;
+      width: 100%;
+    }
+
+    /* ─── Header ────────────────────────────────────────────── */
+    .header {
+      padding: 44px 48px 32px;
+      text-align: center;
+    }
+
+    /* Logo mark */
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      height: 52px;
+      width: 52px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.4);
+    }
+
+    .logo-mark svg,
+    .logo-mark img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain;
+      border-radius: 14px;
+      display: block;
+    }
+
+    .logo-name {
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0;
+    }
+
+    /* ─── Body content ──────────────────────────────────────── */
+    .body-content {
+      padding: 0 48px 40px;
+      text-align: center;
+    }
+
+    .heading {
+      color: #f1f5f9;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+
+    .subtext {
+      color: #8b93a7;
+      font-size: 15px;
+      line-height: 1.7;
+      margin-bottom: 36px;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── CTA Button ────────────────────────────────────────── */
+    .cta-wrap {
+      margin-bottom: 36px;
+    }
+
+    .cta-btn {
+      background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+      border-radius: 12px;
+      color: #ffffff !important;
+      display: inline-block;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 16px 44px;
+      text-align: center;
+      text-decoration: none !important;
+      box-shadow: 0 8px 32px rgba(139, 92, 246, 0.45), 0 1px 0 rgba(255, 255, 255, 0.1) inset;
+      transition: all 0.2s ease;
+    }
+
+    /* ─── Divider ───────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin: 0 48px 28px;
+    }
+
+    /* ─── Fallback link ─────────────────────────────────────── */
+    .fallback {
+      color: #64748b;
+      font-size: 13px;
+      line-height: 1.6;
+      padding: 0 48px 36px;
+      text-align: center;
+    }
+
+    .fallback a,
+    .fallback span.link {
+      color: #a78bfa;
+      word-break: break-all;
+      font-size: 12px;
+    }
+
+    /* ─── Feature icons row ─────────────────────────────────── */
+    .features {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      width: 100%;
+      text-align: center;
+      padding: 28px 48px;
+    }
+
+    .feature-item {
+      color: #64748b;
+      display: inline-block;
+      width: 32%;
+      font-size: 12px;
+      text-align: center;
+      padding: 0 8px;
+      vertical-align: top;
+    }
+
+    .feature-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+      display: block;
+      width: 100%;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .feature-label {
+      color: #8b93a7;
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    .footer {
+      background-color: #0a0c10;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 24px 48px;
+      text-align: center;
+    }
+
+    .footer-brand {
+      color: #334155;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .footer-links {
+      color: #475569;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .footer-links a {
+      color: #475569;
+    }
+
+    .footer-links span {
+      margin: 0 6px;
+      opacity: 0.4;
+    }
+
+    .footer-copy {
+      color: #1e293b;
+      font-size: 11px;
+    }
+
+    /* ─── Expiry badge ──────────────────────────────────────── */
+    .expiry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(234, 179, 8, 0.08);
+      border: 1px solid rgba(234, 179, 8, 0.2);
+      border-radius: 20px;
+      color: #ca8a04;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="card">
+
+      <!-- Purple glow bar -->
+      <div class="header-glow"></div>
+
+      <!-- Header: logo + brand -->
+      <div class="header">
+        <div class="logo-mark">
+          <!-- Briefcase / HR icon -->
+          <img src="cid:logo" width="52" height="52" alt="Eburon HR Logo" style="display: block;" />
+
+        </div>
+        <p class="logo-name">Eburon HR</p>
+      </div>
+
+      <!-- Main content -->
+      <div class="body-content">
+        <!-- Expiry notice -->
+        <div class="expiry-badge">
+          &#9203; This link expires in 15 minutes
+        </div>
+
+        <h1 class="heading">{{heading}}</h1>
+        <p class="subtext">{{body}}</p>
+
+        <!-- CTA -->
+        <div class="cta-wrap">
+          <a href="{{magicLink}}" class="cta-btn" target="_blank" rel="noopener noreferrer">
+            {{ctaLabel}}
+          </a>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="divider" />
+
+      <!-- Fallback link -->
+      <div class="fallback">
+        <p>If the button doesn't work, copy and paste this link into your browser:</p>
+        <br />
+        <a href="{{magicLink}}">{{magicLink}}</a>
+      </div>
+
+      <!-- Feature icons -->
+      <div class="features">
+        <div class="feature-item">
+          <span class="feature-icon">&#128273;</span>
+          <p class="feature-label">Secure Access</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">&#9889;</span>
+          <p class="feature-label">One-Click Login</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">&#127759;</span>
+          <p class="feature-label">Always Available</p>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p class="footer-brand">Eburon HR</p>
+        <p class="footer-links">
+          <a href="#">Support</a><span>|</span>
+          <a href="#">Privacy</a><span>|</span>
+          <a href="#">Preferences</a>
+        </p>
+        <p class="footer-copy">&copy; {{year}} Eburon HR. All rights reserved.</p>
+      </div>
+
+    </div>
+  </div>
+</body>
+
+</html>
